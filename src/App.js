@@ -22,5 +22,5 @@ class App extends Component {
     );
   }
 }
-//commit 17/9
+
 export default App;
