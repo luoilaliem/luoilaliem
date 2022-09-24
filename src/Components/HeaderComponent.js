@@ -1,4 +1,4 @@
-import react, { Component } from "react";
+import React, { Component } from "react";
 import {
     Navbar,
     NavbarBrand,
@@ -31,8 +31,8 @@ class Header extends Component {
                         <NavbarBrand className="mr-auto">
                             <img src="/assets/images/logo.png" height="30" width="41" alt="Ristorante Con Fusion" />
                         </NavbarBrand>
-                        <Collapse isOpen={this.state.isNavOpen} Navbar>
-                            <Nav Navbar>
+                        <Collapse isOpen={this.state.isNavOpen} navbar>
+                            <Nav navbar>
                                 <NavItem>
                                     <NavLink className="nav-link" to="/staff">
                                         <span className="fa fa-users fa-lg"></span> Nhan Vien
@@ -42,7 +42,10 @@ class Header extends Component {
                                     <NavLink className="nav-link" to="/department">
                                         <span className="fa fa-id-card-o fa-lg"></span> Phong Ban
                                     </NavLink>
-                                    <NavLink className="nav-link" to="/salary">
+                                    
+                                </NavItem>
+                                <NavItem>
+                                <NavLink className="nav-link" to="/salary">
                                         <span className="fa fa-money fa-lg"></span> Bang Luong
                                     </NavLink>
                                 </NavItem>
