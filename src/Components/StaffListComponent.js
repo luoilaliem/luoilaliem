@@ -9,18 +9,7 @@ import { NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 function StaffList(props) {
-    const RenderStaffItem = ({ nv }) => {
-        return (
-            <Link to={`/nhanvien/${nv.id}`}>
-                <Card>
-                    <CardImg width="100%" src={nv.image} alt={nv.name} />
-                    <CardBody>
-                        <CardSubtitle>{nv.name}</CardSubtitle>
-                    </CardBody>
-                </Card>
-            </Link>
-        );
-    };
+    
     const ListNhanvien = props.staffs.map((nv) => {
         return (
             <div key={nv.id}>
