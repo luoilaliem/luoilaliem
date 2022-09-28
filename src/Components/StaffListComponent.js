@@ -14,7 +14,7 @@ import {
     Label,
     FormFeedback
 } from "reactstrap";
-import { Control, LocalForm, Errors } from "react-redux-form";
+import { Control, LocalForm, Errors, Field } from "react-redux-form";
 import { Link } from "react-router-dom";
 
 const RenderStaffItem = ({ staff }) => {
@@ -44,6 +44,9 @@ class StaffList extends Component {
 
         this.toggleModal = this.toggleModal.bind(this);
         this.timNhanvien = this.timNhanvien.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
 
     }
 
@@ -58,20 +61,73 @@ class StaffList extends Component {
         event.preventDefault();
         this.setState({ nameF: nameS });
     }
-    validate(doB, startDate) {
-        const errors = {
-          doB: "",
-          startDate: ""
+
+    handleBlur = (field) => (event) => {
+        this.setState({
+            touched: { ...this.state.touched, [field]: true }
+        });
+    };
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = event.value;
+        const name = event.name;
+        this.setState({
+            [name]: value
+        });
+    }
+    handleSubmit = () => {
+        const newStaff = {
+            name: this.state.name,
+            department: this.state.department,
+            salaryScale: this.state.salaryScale,
+            annualLeave: this.state.annualLeave,
+            overTime: this.state.overTime,
+            doB: this.state.doB,
+            startDate: this.state.startDate,
+            image: this.state.image
         };
-    
-        if (this.state.touched.doB && doB.length < 1) errors.doB = "Yêu cầu nhập";
-        if (this.state.touched.startDate && startDate.length < 1)
-          errors.startDate = "Yêu cầu nhập";
-    
+        this.props.onAdd(newStaff);
+    };
+    validate(
+        name, department, salaryScale, doB, startDate, annualLeave, overTime
+    ) {
+        const errors = {
+            name: "",
+            department: "",
+            salaryScale: "",
+            doB: "",
+            startDate: "",
+            annualLeave: "",
+            overTime: ""
+        };
+        if (this.state.touched.name && name.length < 3)
+            errors.name = " nhap nhieu hon 3 ky tu";
+        else if (this.state.touched.name && name.length > 50)
+            errors.name = " nhap it hon 50 ky tu";
+        if (this.state.touched.department && department.length < 1)
+            errors.department = " yeu cau nhap";
+        if (this.state.touched.salaryScale && salaryScale.length < 1)
+            errors.salaryScale = " yeu cau nhap";
+        if (this.state.touched.annualLeave && annualLeave.length < 1)
+            errors.annualLeave = " yeu cau nhap";
+        if (this.state.touched.overTime && overTime.length < 1)
+            errors.overTime = " yeu cau nhap";
+            if (this.state.touched.doB && doB.length < 1)
+            errors.overTime = " yeu cau nhap";
+            if (this.state.touched.startDate && startDate.length < 1)
+                errors.startDate = " yeu cau nhap";
         return errors;
-      }
+    }
     render() {
-        const errors = this.validate(this.state.doB, this.state.startDate); // Tạo biến báo lỗi khi người dùng khai báo thiếu
+        const errors = this.validate(
+            this.state.name,
+            this.state.department,
+            this.state.salaryScale,
+            this.state.annualLeave,
+            this.state.overTime,
+            this.state.doB,
+            this.state.startDate); // Tạo biến báo lỗi khi người dùng khai báo thiếu
         const staffList = this.props.staffs
             .filter((val) => {
                 if (this.state.nameF === "") return val;
