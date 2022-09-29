@@ -14,12 +14,12 @@ import {
     Label,
     FormFeedback
 } from "reactstrap";
-import { Control, LocalForm, Errors, Field } from "react-redux-form";
+import { Control, LocalForm, Errors } from "react-redux-form";
 import { Link } from "react-router-dom";
 
 const RenderStaffItem = ({ staff }) => {
     return (
-        <Link to={`/staff/${staff.id}`}>
+        <Link to={`/nhanvien/${staff.id}`}>
             <Card>
                 <CardImg width="100%" src={staff.image} alt={staff.name} />
                 <CardBody>
@@ -33,13 +33,26 @@ class StaffList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            nameF: "",
-            modalOpen: false,
+            name: "",
+            salaryScale: 1,
+            startDate: "",
+            department: "Sale",
+            annualLeave: 0,
+            overTime: 0,
+            salary: 30000,
+            image: ".assets/images/alberto.png",
             doB: "",
             touched: {
                 doB: false,
-                startDate: false
-            }
+                startDate: false,
+                name: false,
+            salaryScale: false,
+            department: false,
+            annualLeave: false,
+            overTime: false,
+            },
+            modalOpen: false,
+            nameF: "",
         };
 
         this.toggleModal = this.toggleModal.bind(this);
@@ -70,8 +83,8 @@ class StaffList extends Component {
 
     handleInputChange(event) {
         const target = event.target;
-        const value = event.value;
-        const name = event.name;
+        const value = target.type ==="checkbox" ? target.checked : target.value;
+        const name = target.name;
         this.setState({
             [name]: value
         });
@@ -113,10 +126,10 @@ class StaffList extends Component {
             errors.annualLeave = " yeu cau nhap";
         if (this.state.touched.overTime && overTime.length < 1)
             errors.overTime = " yeu cau nhap";
-            if (this.state.touched.doB && doB.length < 1)
+        if (this.state.touched.doB && doB.length < 1)
             errors.overTime = " yeu cau nhap";
-            if (this.state.touched.startDate && startDate.length < 1)
-                errors.startDate = " yeu cau nhap";
+        if (this.state.touched.startDate && startDate.length < 1)
+            errors.startDate = " yeu cau nhap";
         return errors;
     }
     render() {
@@ -177,8 +190,9 @@ class StaffList extends Component {
                         </form>
                     </div>
                 </div>
+                <div className="row shadow mb-5 mt-5">{staffList}</div>
             </div>
-        )
+        );
     }
 }
 
