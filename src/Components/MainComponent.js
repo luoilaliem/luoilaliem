@@ -26,15 +26,15 @@ function Main() {
             />
         );
     };
-    const addStaff = (staff) => {
-        const id = Math.floor(Math.random() * 10000 + 1);
-        const newStaff = { id, ...staff };
-        this.setState({
-          staffs: [...nhanvien.staffs, newStaff],
-        });
-        console.log(newStaff);
-        console.log(nhanvien.staffs);
-      };
+    // const addStaff = (staff) => {
+    //     const id = Math.floor(Math.random() * 10000 + 1);
+    //     const newStaff = { id, ...staff };
+    //     this.setState({
+    //       staffs: [...this.state.staffs, newStaff],
+    //     });
+    //     console.log(newStaff);
+    //     console.log(nhanvien.staffs);
+    //   };
     return (
         <div>
             <Header />
@@ -43,7 +43,7 @@ function Main() {
                
                 <Route
                     path='/nhanvien'
-                    component={() => <StaffList onAdd={ addStaff} staffs={nhanvien.staffs} />}>
+                    component={() => <StaffList  staffs={nhanvien.staffs} />}>
                 </Route>
                 <Route
                     path="/salary"
