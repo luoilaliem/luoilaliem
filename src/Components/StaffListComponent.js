@@ -13,6 +13,7 @@ import {
     Row,
     Label,
     FormFeedback,
+    Form,
 
 } from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
@@ -39,11 +40,23 @@ class StaffList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            // name: "",
+            // salaryScale: 1,            
+            // department: "Sale",
+            // annualLeave: 0,
+            // overTime: 0,
+            // salary: 30000,
+            // image: "/assets/images/alberto.png",
             startDate: "",
             doB: "",
             touched: {
                 doB: false,
                 startDate: false,
+                // name: false,
+                // salaryScale: false,
+                // department: false,
+                // annualLeave: false,
+                // overTime: false,
             },
             modalOpen: false,
             nameF: "",
@@ -69,7 +82,7 @@ class StaffList extends Component {
         this.setState({ nameF: nameS });
     }
 
-    handleBlur = (field) => (evt) => {
+    handleBlur = (field) => (event) => {
         this.setState({
             touched: { ...this.state.touched, [field]: true }
         });
@@ -92,7 +105,7 @@ class StaffList extends Component {
             overTime: value.overTime,
             doB: this.state.doB,
             startDate: this.state.startDate,
-            image: '/assets/images/alberto.png'
+            image: "/assets/images/alberto.png"
         };
         if (!this.state.doB || !this.state.startDate)
             this.setState({
@@ -105,8 +118,24 @@ class StaffList extends Component {
         const errors = {
             doB: "",
             startDate: ""
+            // name: "",
+            // department: "",
+            // salaryScale: "",
+            // annualLeave: "",
+            // overTime: ""
         };
-     
+        // if (this.state.touched.name && name.length < 3)
+        //     errors.name = " nhap nhieu hon 3 ky tu";
+        // else if (this.state.touched.name && name.length > 50)
+        //     errors.name = " nhap it hon 50 ky tu";
+        // if (this.state.touched.department && department.length < 1)
+        //     errors.department = " yeu cau nhap";
+        // if (this.state.touched.salaryScale && salaryScale.length < 1)
+        //     errors.salaryScale = " yeu cau nhap";
+        // if (this.state.touched.annualLeave && annualLeave.length < 1)
+        //     errors.annualLeave = " yeu cau nhap";
+        // if (this.state.touched.overTime && overTime.length < 1)
+        //     errors.overTime = " yeu cau nhap";
         if (this.state.touched.doB && doB.length < 1)
             errors.overTime = " yeu cau nhap";
         if (this.state.touched.startDate && startDate.length < 1)
@@ -115,9 +144,14 @@ class StaffList extends Component {
     }
     render() {
         const errors = this.validate(
+            // this.state.name,
+            // this.state.department,
+            // this.state.salaryScale,
+            // this.state.annualLeave,
+            // this.state.overTime,
             this.state.doB,
             this.state.startDate
-        );
+        ); // Tạo biến báo lỗi khi người dùng khai báo thiếu
         const staffList = this.props.staffs
             .filter((val) => {
                 if (this.state.nameF === "") return val;
@@ -226,7 +260,7 @@ class StaffList extends Component {
                                 </Label>
                                 <Col md={8}>
                                     <Input
-                                        type="Date"
+                                        type="date"
                                         name="startDate"
                                         id="startDate"
                                         valid={errors.startDate === ""}
@@ -347,6 +381,68 @@ class StaffList extends Component {
                                 </Col>
                             </Row>
                         </LocalForm>
+                        {/* <Form onSubmit={this.handleSubmit}>
+                            <Row className="control-group">
+                                <Label htmlFor="name" md={4}>
+                                    ten
+                                </Label>
+                                <Col md={8}>
+                                    <Input
+                                        type="text"
+                                        className="form-control"
+                                        id="name"
+                                        name="name"
+                                        value={this.state.name}
+                                        valid={errors.name === ""}
+                                        invalid={errors.name !== ""}
+                                        onBlur={this.handleBlur("name")}
+                                        onChange={this.handleInputChange}
+                                    />
+                                    <FormFeedback>{errors.name}</FormFeedback>
+                                </Col>
+                            </Row>
+                            <Row className="control-group">
+                                <Label htmlFor="doB" md={4}>
+                                    Ngày sinh
+                                </Label>
+                                <Col md={8}>
+                                    <Input
+                                        type="date"
+                                        name="doB"
+                                        id="doB"
+                                        valid={errors.doB === ""}
+                                        invalid={errors.doB !== ""}
+                                        onBlur={this.handleBlur("doB")}
+                                        onChange={this.handleInputChange}
+                                    />
+                                    <FormFeedback>{errors.doB}</FormFeedback>
+                                </Col>
+                            </Row>
+                            <Row className="control-group">
+                                <Label htmlFor="startDate" md={4}>
+                                    Ngày vào công ty
+                                </Label>
+                                <Col md={8}>
+                                    <Input
+                                        type="date"
+                                        name="startDate"
+                                        id="startDate"
+                                        valid={errors.startDate === ""}
+                                        invalid={errors.startDate !== ""}
+                                        onBlur={this.handleBlur("startDate")}
+                                        onChange={this.handleInputChange}
+                                    />
+                                    <FormFeedback>{errors.startDate}</FormFeedback>
+                                </Col>
+                            </Row>
+                            <Row className="control-group">
+                                <Col md={{ size: 10, offset: 2 }}>
+                                    <Button type="submit" color="success">
+                                        Thêm
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </Form> */}
 
                     </ModalBody>
                 </Modal>
