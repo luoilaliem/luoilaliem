@@ -40,7 +40,7 @@ function RenderStaff({ staff }) {
     }
 }
 const StaffDetail = (props) => {
-    if (props.nv != null) {
+    if (props.staff != null) {
         return (
           <div className="container">
             <div className="row">
@@ -48,15 +48,15 @@ const StaffDetail = (props) => {
                 <BreadcrumbItem>
                   <Link to="/nhanvien">Nhân viên</Link>
                 </BreadcrumbItem>
-                <BreadcrumbItem active>{props.nv.name}</BreadcrumbItem>
+                <BreadcrumbItem active>{props.staff.name}</BreadcrumbItem>
               </Breadcrumb>
               <div className="col-12">
-                <h3>{props.nv.name}</h3>
+                <h3>{props.staff.name}</h3>
                 <hr />
               </div>
             </div>
             <div className="row mb-3">
-              <RenderStaff staff={props.nv} />
+              <RenderStaff staff={props.staff} />
             </div>
           </div>
         );
