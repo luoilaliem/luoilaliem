@@ -5,11 +5,22 @@ import StaffList from "./StaffListComponent";
 import StaffDetail from "./StaffdetailComponent";
 import Salary from "./SalaryComponent";
 import Department from "./Department";
-import { Route, Switch, Redirect, withRouter, useHistory } from "react-router-dom";
+import DepartmentDetail from "./DepartmentdetailComponent";
+import { Route, Switch, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
 
-export const history = useHistory;
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+import {
+    addStaff,
+    fetchStaffs,
+    fetchDepartments,
+    fetchStaffsSalary,
+    deleteStaff,
+    updateStaff
+} from "../redux/ActionCreators";
+
+
+
 const mapStateToProps = (state) => {
     return {
         staffs: state.staffs,
@@ -51,7 +62,7 @@ class Main extends Component {
             return (
                 <StaffDetail
                     staff={
-                        this.state.staffs.filter(
+                        this.props.staffs.staffs.filter(
                             (staff) => staff.id === parseInt(match.params.staffId, 10)
                         )[0]
                     }
@@ -100,7 +111,7 @@ class Main extends Component {
                             <Route
                                 path="/salary"
                                 component={() => (
-                                    <Salary salary={this.state.staffsSalary.staffsSalary} />
+                                    <Salary salary={this.props.staffsSalary.staffsSalary} />
                                 )}
                             />
                             <Route
@@ -121,4 +132,5 @@ class Main extends Component {
         );
     }
 }
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main))

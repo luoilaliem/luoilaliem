@@ -1,67 +1,266 @@
-import React from "react";
+import React, { Component } from "react";
 import {
-    CardImg,
-    CardText,
-    CardTitle,
-    Breadcrumb,
-    BreadcrumbItem,
+  CardImg,
+  CardText,
+  CardTitle,
+  Breadcrumb,
+  BreadcrumbItem,
+  Row,
+  Col,
+  Label,
+  Button,
+  Form
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import dateFormat from "dateformat";
 
-function RenderStaff({ staff }) {
-    if (staff != null) {
-        return (
-            <div className="col-12">
-                <div className="row">
-                    <div className="col-3">
-                        <CardImg width="100%" src={staff.image} alt={staff.name} />
-                    </div>
-                    <div className="col-9">
-                        <CardTitle>Ho va ten: {staff.name}</CardTitle>
-                        <CardText>
-                            Ngay sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}
-                        </CardText>
-                        <CardText>
-                            Ngay vao cong ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}
-                        </CardText>
-                        <CardText>
-                            Phong ban: {staff.department.name || staff.department}
-                        </CardText>
-                        <CardText>So ngay nghi con lai: {staff.annualLeave}</CardText>
-                        <CardText>So ngay da lam them: {staff.overTime}</CardText>
-                    </div>
-                </div>
-            </div>
-        );
-    } else {
-        return <div></div>;
-        
-    }
+function RenderStaff({ staff, dept }) {
+  if (staff != null && dept != null) {
+    return (
+      <div className="col-12">
+        <div className="row">
+          <div className="col-3">
+            <CardImg width="100%" src={staff.image} alt={staff.name} />
+          </div>
+          <div className="col-9">
+            <CardTitle>Ho va ten: {staff.name}</CardTitle>
+            <CardText>
+              Ngay sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}
+            </CardText>
+            <CardText>
+              Ngay vao cong ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}
+            </CardText>
+            <CardText>
+              Phong ban: {dept.name}
+            </CardText>
+            <CardText>So ngay nghi con lai: {staff.annualLeave}</CardText>
+            <CardText>So ngay da lam them: {staff.overTime}</CardText>
+          </div>
+        </div>
+       </div>
+    );
+  } else {
+    return <div></div>;
+
+  }
 }
-const StaffDetail = (props) => {
-    if (props.staff != null) {
-        return (
-          <div className="container">
-            <div className="row">
-              <Breadcrumb>
-                <BreadcrumbItem>
-                  <Link to="/nhanvien">Nhân viên</Link>
-                </BreadcrumbItem>
-                <BreadcrumbItem active>{props.staff.name}</BreadcrumbItem>
-              </Breadcrumb>
-              <div className="col-12">
-                <h3>{props.staff.name}</h3>
-                <hr />
-              </div>
-            </div>
-            <div className="row mb-3">
-              <RenderStaff staff={props.staff} />
+class EditForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      staff: props.staff
+    };
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const staffUpdated = {
+      id: this.state.staff.id,
+      name: this.state.staff.name,
+      doB: this.state.staff.doB,
+      salaryScale: parseFloat(this.state.staff.salaryScale, 2),
+      startDate: this.state.staff.startDate,
+      image: "/assets/images/alberto.png",
+      departmentId: this.state.staff.departmentId,
+      annualLeave: parseInt(this.state.staff.annualLeave, 10),
+      overTime: parseInt(this.state.staff.overTime, 10)
+    };
+    this.props.onUpdate(staffUpdated);
+  }
+  render() {
+    return (
+      <div>
+        <Form onSubmit={this.handleSubmit.bind(this)}>
+          <Row>
+            <Col md={4}>
+              <Label htmlFor="name">Name</Label>
+            </Col>
+            <Col md={8}>
+              <input
+                class="form-control"
+                
+                value={this.state.staff.name}
+                name="name"
+                onChange={(e) =>
+                  this.setState({
+                    staff: { ...this.state.staff, name: e.target.value }
+                  })
+                }
+              />
+              <input type="hidden" name="id" value={this.state.staff.id} />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={4}>
+              <Label htmlFor="doB">Ngày sinh</Label>
+            </Col>
+            <Col md={8}>
+              <input
+                class="form-control"
+                type="date"
+                name="doB"
+                value={this.state.staff.doB}
+                onChange={(e) =>
+                  this.setState({
+                    staff: { ...this.state.staff, doB: e.target.value }
+                  })
+                }
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={4}>
+              <Label htmlFor="startDate">Ngày vào công ty</Label>
+            </Col>
+            <Col md={8}>
+              <input
+                class="form-control"
+                type="date"
+                name="startDate"
+                value={this.state.staff.startDate}
+                onChange={(e) =>
+                  this.setState({
+                    staff: { ...this.state.staff, startDate: e.target.value }
+                  })
+                }
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={4}>
+              <Label htmlFor="salaryScale">He so luong</Label>
+            </Col>
+            <Col md={8}>
+              <input
+                class="form-control"
+                name="salaryScale"
+                value={this.state.staff.salaryScale}
+                onChange={(e) =>
+                  this.setState({
+                    staff: { ...this.state.staff, salaryScale: e.target.value }
+                  })
+                }
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={4}>
+              <Label htmlFor="departmentId">Phong ban</Label>
+            </Col>
+            <Col md={8}>
+              <select
+                class="form-control"
+                name="departmentId"
+                value={this.state.staff.departmentId}
+                onChange={(e) =>
+                  this.setState({
+                    staff: { ...this.state.staff, departmentId: e.target.value }
+                  })
+                }
+              >
+                <option value="Dept01">Sale</option>
+                <option value="Dept02">HR</option>
+                <option value="Dept03">Marketing</option>
+                <option value="Dept04">IT</option>
+                <option value="Dept05">Finance</option>
+              </select>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={4}>
+              <Label htmlFor="annualLeave">Số ngày nghỉ còn lại</Label>
+            </Col>
+            <Col md={8}>
+              <input
+                class="form-control"
+                name="annualLeave"
+                value={this.state.staff.annualLeave}
+                onChange={(e) =>
+                  this.setState({
+                    staff: { ...this.state.staff, annualLeave: e.target.value }
+                  })
+                }
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={4}>
+              <Label htmlFor="overTime">Số ngày đã làm thêm</Label>
+            </Col>
+            <Col md={8}>
+              <input
+                class="form-control"
+                name="overTime"
+                value={this.state.staff.overTime}
+                onChange={(e) =>
+                  this.setState({
+                    staff: { ...this.state.staff, overTime: e.target.value }
+                  })
+                }
+              />
+            </Col>
+          </Row>
+          <Button color="success" type="submit">
+            Update
+          </Button>
+        </Form>
+      </div>
+    );
+  }
+}
+class StaffDetail extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      select: true,
+    };
+  }
+  render() {
+    if (this.props.staff != null) {
+      return (
+        <div className="container">
+          <div className="row">
+            <Breadcrumb>
+              <BreadcrumbItem>
+                <Link to="/staff">Nhân viên</Link>
+              </BreadcrumbItem>
+              <BreadcrumbItem active>{this.props.staff.name}</BreadcrumbItem>
+            </Breadcrumb>
+            <div className="col-12">
+              <h3>{this.props.staff.name}</h3>
+              <button color="success" onClick={() => this.setState(
+                { select: !this.state.select }
+              )}>
+                update
+              </button>
+              <hr />
             </div>
           </div>
-        );
-      } else {
-        return <div></div>;
-      }
+          {this.state.select ? (
+            <div className="row mb-3">
+              <RenderStaff
+                staff={this.props.staff}
+                dept={
+                  this.props.dept.filter(
+                    (dp) => dp.id === this.props.staff.departmentId
+                  )[0]
+                }
+              />
+            </div>
+          ) : (
+            <div className="row mb-3">
+              <EditForm
+                staff={this.props.staff}
+                onUpdate={this.props.onUpdateStaff}
+              />
+            </div>
+          )}
+        </div>
+      );
+    } else {
+      return <div></div>;
+    }
+  }
 }
+
 export default StaffDetail;
