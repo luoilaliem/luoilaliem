@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './App.css';
 import Main from './Components/MainComponent';
 import {ConfigureStore} from './redux/configureStore';
-
+import Newsss from './Components/new';
 const store = ConfigureStore();
 class App extends Component {
 
@@ -14,6 +14,7 @@ class App extends Component {
         <BrowserRouter>
           <div>
             <Main/>
+{/* <Newsss/> */}
           </div>
         </BrowserRouter>
       </Provider>
